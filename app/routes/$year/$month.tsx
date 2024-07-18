@@ -3,6 +3,7 @@ import { json } from "@remix-run/node";
 import fs from "fs";
 import path from "path";
 import { useState, useEffect } from "react";
+import sharp from "sharp";
 
 export const loader = async ({ params }: { params: { year: string; month: string } }) => {
 	const { year, month } = params;
@@ -17,11 +18,22 @@ export const loader = async ({ params }: { params: { year: string; month: string
 				file.toLowerCase().endsWith(".png") ||
 				file.toLowerCase().endsWith(".gif")
 		);
-	const images = files.map((file) => {
-		const filePath = path.join(monthPath, file);
-		const fileBuffer = fs.readFileSync(filePath);
-		return fileBuffer.toString("base64");
-	});
+	// 画像のリサイズとBase64エンコード
+	const images = await Promise.all(
+		files.map(async (file) => {
+			const filePath = path.join(monthPath, file);
+			console.log(filePath);
+			const fileBuffer = fs.readFileSync(filePath);
+
+			// 画像のリサイズと圧縮
+			const resizedImageBuffer = await sharp(fileBuffer)
+				.resize(480) // 幅を800ピクセルにリサイズ
+				.jpeg({ quality: 70 }) // JPEGフォーマットに変換し、画質を70に設定
+				.toBuffer();
+
+			return resizedImageBuffer.toString("base64");
+		})
+	);
 
 	return json({ year, month, files, images });
 };

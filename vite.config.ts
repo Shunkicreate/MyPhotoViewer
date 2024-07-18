@@ -10,6 +10,14 @@ export default defineConfig({
         v3_relativeSplatPath: true,
         v3_throwAbortReason: true,
       },
+      basename: "/",
+      buildDirectory: "build",
+      routes(defineRoutes) {
+        return defineRoutes((route) => {
+          route("/:year", "routes/$year.tsx");
+          route("/:year/:month", "routes/$year/$month.tsx");
+        });
+      },
     }),
     tsconfigPaths(),
   ],

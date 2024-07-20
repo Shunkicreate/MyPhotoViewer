@@ -28,14 +28,20 @@ export const action: ActionFunction = async ({ request }) => {
   const files = formData.getAll("file") as string[]; // 複数のファイルを取得
   const images = await Promise.all(
     files.map(async (file) => {
-      const filePath = path.join("\\\\raspberrypi\\Main\\Photos", year, month, file);
-      const fileBuffer = fs.readFileSync(filePath);
-      const resizedImageBuffer = await sharp(fileBuffer).resize(480).jpeg({ quality: 70 }).toBuffer();
-      return resizedImageBuffer.toString("base64");
+      try {
+        const filePath = path.join("\\\\raspberrypi\\Main\\Photos", year, month, file);
+        const fileBuffer = fs.readFileSync(filePath);
+        const resizedImageBuffer = await sharp(fileBuffer).resize(480).jpeg({ quality: 70 }).toBuffer();
+        return resizedImageBuffer.toString("base64");
+      } catch (error) {
+        console.error("Error processing image:", error);
+        return null
+      }
     })
   );
+  const notNullImages = images.filter((image) => image !== null) as string[];
 
-  return json({ files, images });
+  return json({ notNullImages, images });
 };
 
 interface LoaderData {

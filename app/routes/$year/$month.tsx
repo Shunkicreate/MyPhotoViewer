@@ -41,7 +41,7 @@ export const action: ActionFunction = async ({ request }) => {
   );
   const notNullImages = images.filter((image) => image !== null) as string[];
 
-  return json({ notNullImages, images });
+  return json({ files, images: notNullImages });
 };
 
 interface LoaderData {

@@ -66,7 +66,7 @@ export default function Month() {
       nextFiles.forEach(file => formData.append("file", file));
       fetcher.submit(formData, { method: "post", action: `/${year}/${month}` });
     };
-    const intervalId = setInterval(loadImages, 1000); // 1秒ごとに追加画像を取得
+    const intervalId = setInterval(loadImages, 200); // 1秒ごとに追加画像を取得
     return () => clearInterval(intervalId); // クリーンアップ
   }, [files, loadedFiles, totalFiles, year, month, hasMore, fetcher]);
   

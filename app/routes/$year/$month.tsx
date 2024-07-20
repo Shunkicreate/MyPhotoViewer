@@ -25,13 +25,17 @@ export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
   const year = formData.get("year") as string;
   const month = formData.get("month") as string;
-  const file = formData.get("file") as string;
-	const filePath = path.join("\\\\raspberrypi\\Main\\Photos", year, month, file);
-	const fileBuffer = fs.readFileSync(filePath);
+  const files = formData.getAll("file") as string[]; // 複数のファイルを取得
+  const images = await Promise.all(
+    files.map(async (file) => {
+      const filePath = path.join("\\\\raspberrypi\\Main\\Photos", year, month, file);
+      const fileBuffer = fs.readFileSync(filePath);
+      const resizedImageBuffer = await sharp(fileBuffer).resize(480).jpeg({ quality: 70 }).toBuffer();
+      return resizedImageBuffer.toString("base64");
+    })
+  );
 
-	const resizedImageBuffer = await sharp(fileBuffer).resize(480).jpeg({ quality: 70 }).toBuffer();
-
-	return json({ file, image: resizedImageBuffer.toString("base64") });
+  return json({ files, images });
 };
 
 interface LoaderData {
@@ -48,34 +52,31 @@ export default function Month() {
 	const fetcher = useFetcher<typeof action>();
 	const [hasMore, setHasMore] = useState(true);
 
-	useEffect(() => {
-		const loadImages = async () => {
-			if (loadedFiles.length >= totalFiles) {
-				setHasMore(false);
-				return;
-			}
-
-      const file = files[loadedFiles.length];
+  useEffect(() => {
+    const loadImages = async () => {
+      if (loadedFiles.length >= totalFiles) {
+        setHasMore(false);
+        return;
+      }
+      // 10個のファイルを一度にリクエスト
+      const nextFiles = files.slice(loadedFiles.length, loadedFiles.length + 10);
       const formData = new FormData();
       formData.append("year", year);
       formData.append("month", month);
-      formData.append("file", file);
-
+      nextFiles.forEach(file => formData.append("file", file));
       fetcher.submit(formData, { method: "post", action: `/${year}/${month}` });
     };
-
-		const intervalId = setInterval(loadImages, 1000); // 1秒ごとに追加画像を取得
-
-		return () => clearInterval(intervalId); // クリーンアップ
-	}, [files, loadedFiles, totalFiles, year, month, hasMore, fetcher]);
-
-	useEffect(() => {
-		// Check if fetcher.data is defined before accessing its properties
-		if (fetcher.data?.file && fetcher.data?.image) {
-			setLoadedFiles((prev) => [...prev, fetcher.data.file]);
-			setLoadedImages((prev) => [...prev, fetcher.data.image]);
-		}
-	}, [fetcher.data]);
+    const intervalId = setInterval(loadImages, 1000); // 1秒ごとに追加画像を取得
+    return () => clearInterval(intervalId); // クリーンアップ
+  }, [files, loadedFiles, totalFiles, year, month, hasMore, fetcher]);
+  
+  // fetcher.dataの処理を更新
+  useEffect(() => {
+    if (fetcher.data?.files && fetcher.data?.images) {
+      setLoadedFiles((prev) => [...prev, ...fetcher.data.files]);
+      setLoadedImages((prev) => [...prev, ...fetcher.data.images]);
+    }
+  }, [fetcher.data]);
 
 	return (
 		<div className='font-sans p-4'>

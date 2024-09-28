@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 export interface YearListProps {
     selectedYear: number;
@@ -7,11 +7,33 @@ export interface YearListProps {
 
 const YearList: React.FC<YearListProps> = ({ selectedYear, years }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     const toggleDropdown = () => setIsOpen(!isOpen);
 
+    const handleClickOutside = (event: MouseEvent) => {
+        if (
+            dropdownRef.current &&
+            !dropdownRef.current.contains(event.target as Node)
+        ) {
+            setIsOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        if (isOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isOpen]);
+
     return (
-        <div className="relative inline-block text-left my-auto">
+        <div className="relative inline-block text-left my-auto" ref={dropdownRef}>
             <div>
                 <button
                     type="button"

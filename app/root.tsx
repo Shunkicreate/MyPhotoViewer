@@ -6,8 +6,21 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import "./tailwind.css";
+import Header from "./components/Header";
+import { TextFieldProps } from './components/TextField';
+import { YearListProps } from './components/YearList';
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const yearListProps: YearListProps = {
+    selectedYear: 2021,
+    years: [2021, 2020, 2019, 2018],
+  };
+  const textFieldProps: TextFieldProps = {
+    value: '',
+    onChange: () => {},
+  };
+
+
   return (
     <html lang="en">
       <head>
@@ -16,7 +29,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="font-noto-sans-jp text-text-color bg-bg-color">
+        <Header yearListProps={yearListProps} textFieldProps={textFieldProps} />
         {children}
         <ScrollRestoration />
         <Scripts />

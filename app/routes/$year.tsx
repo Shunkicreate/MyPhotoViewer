@@ -15,7 +15,7 @@ export default function Year() {
 	const { year, months } = useLoaderData<{ year: string; months: string[] }>();
 
 	return (
-		<div className='font-sans p-4'>
+		<div className='p-4'>
 			<h1 className='text-3xl'>Photos of {year}</h1>
 			<div className='mt-4'>
 				{months.map((month) => (

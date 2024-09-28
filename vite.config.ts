@@ -16,6 +16,7 @@ export default defineConfig({
         return defineRoutes((route) => {
           route("/:year", "routes/$year.tsx");
           route("/:year/:month", "routes/$year/$month.tsx");
+          route("/:year/:month/:photoName", "routes/$year/$month/$photo.tsx");
         });
       },
     }),

@@ -18,7 +18,7 @@ export const loader = async ({ params }: { params: { year: string; month: string
 				file.toLowerCase().endsWith(".png") ||
 				file.toLowerCase().endsWith(".gif")
 		);
-
+	console.log(files);
 	return json({ year, month, files, totalFiles: files.length });
 };
 
@@ -93,8 +93,10 @@ export default function Month() {
 			</h1>
 			<div className='mt-4 grid grid-cols-3 gap-4'>
 				{loadedImages.map((image, i) => (
-					<div key={i} className='border p-2'>
-						<img src={`data:image/jpeg;base64,${image}`} alt={loadedFiles[i]} className='w-full h-auto' />
+					<div key={i} className='p-2'>
+						<a href={`/${year}/${month}/${loadedFiles[i]}`}>
+							<img src={`data:image/jpeg;base64,${image}`} alt={loadedFiles[i]} className='w-full h-auto' />
+						</a>
 					</div>
 				))}
 			</div>

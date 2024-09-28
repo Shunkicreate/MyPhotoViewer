@@ -15,6 +15,7 @@ export const loader = async ({ params }: { params: { year: string; month: string
     return new Response(JSON.stringify({ imageData: imageData.toString('base64'), year, month }), {
         headers: {
             "Content-Type": "application/json",
+            "Cache-Control": "public, max-age=600",
         },
     });
 };

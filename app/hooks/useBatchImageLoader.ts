@@ -47,11 +47,6 @@ export function useBatchImageLoader({
     fetcher.submit(formData, { method: 'post', action: `/${year}/${month}` });
   };
 
-  // 初回ロード
-  useEffect(() => {
-    loadImages();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // currentBatchが変化したときにloadImagesを呼び出す
   useEffect(() => {

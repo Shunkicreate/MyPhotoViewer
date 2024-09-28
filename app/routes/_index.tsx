@@ -1,4 +1,4 @@
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, Link } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import fs from "fs";
 
@@ -10,7 +10,7 @@ export const loader = async () => {
 		.filter((dirent) => dirent.isDirectory())
 		.map((dirent) => dirent.name);
 
-	return json({ folders });
+	return json({ folders }, { headers: { "Cache-Control": "public, max-age=600" } });
 };
 
 export default function Index() {
@@ -21,9 +21,9 @@ export default function Index() {
 			<h1 className='text-3xl'>Photo Viewer</h1>
 			<div className='mt-4 grid grid-cols-3 gap-4'>
 				{folders.map((folder) => (
-					<a key={folder} href={`/${folder}`} className='block mt-2'>
+					<Link key={folder} to={`/${folder}`} className='block mt-2'>
 						{folder}
-					</a>
+					</Link>
 				))}
 			</div>
 		</div>

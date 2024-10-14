@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import YearLink from "./YearLink";
 
 export interface YearListProps {
-	selectedYear: number;
+	selectedYear: number | null;
 	years: number[];
-	setSelectedYear: React.Dispatch<React.SetStateAction<number>>;
+	setSelectedYear: (value: number) => void;
 }
 
 const YearDropdown: React.FC<YearListProps> = ({ selectedYear, years, setSelectedYear }: YearListProps) => {

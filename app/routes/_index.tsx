@@ -18,7 +18,7 @@ export default function Index() {
 
 	return (
 		<div className='p-4'>
-			<h1 className='text-3xl'>Photo Viewer</h1>
+			<h1 className='text-3xl'>Years</h1>
 			<div className='mt-4 grid grid-cols-3 gap-4'>
 				{folders.map((folder) => (
 					<Link key={folder} to={`/${folder}`} className='block mt-2'>

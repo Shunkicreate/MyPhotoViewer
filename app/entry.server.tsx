@@ -11,7 +11,10 @@ import { createReadableStreamFromReadable } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
+import fs from "fs";
+// import path from "path";
 
+const NAS_PATH = "\\\\raspberrypi\\Main\\Photos";
 const ABORT_DELAY = 5_000;
 
 export default function handleRequest(
@@ -24,6 +27,23 @@ export default function handleRequest(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loadContext: AppLoadContext
 ) {
+  const { pathname } = new URL(request.url);
+  if (pathname === "/api/folders") {
+    // ディレクトリを読み取る
+    const folders = fs
+      .readdirSync(NAS_PATH, { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name);
+
+    // JSONレスポンスとしてクライアントに返す
+    return new Response(JSON.stringify({ folders }), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
   return isbot(request.headers.get("user-agent") || "")
     ? handleBotRequest(
         request,

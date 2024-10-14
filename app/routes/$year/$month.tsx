@@ -2,7 +2,7 @@ import { json, ActionFunction } from "@remix-run/node";
 import fs from "fs";
 import path from "path";
 import sharp from "sharp";
-import { useLoaderData, Link } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import Loading from "~/components/Loading";
 import { useBatchImageLoader } from "~/hooks/useBatchImageLoader";
 

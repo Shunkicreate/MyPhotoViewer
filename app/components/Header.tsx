@@ -1,8 +1,6 @@
 import React from "react";
-import TextField from "./TextField";
-import YearList from "./YearList";
-import { TextFieldProps } from "./TextField";
-import { YearListProps } from "./YearList";
+import TextField, { TextFieldProps } from "./TextField";
+import YearList, { YearListProps } from "./YearList";
 import { Link } from '@remix-run/react';
 
 interface HeaderProps {

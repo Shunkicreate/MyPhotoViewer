@@ -9,20 +9,41 @@ import "./tailwind.css";
 import Header from "./components/Header";
 import { TextFieldProps } from './components/TextField';
 import { YearListProps } from './components/YearList';
+import { useEffect, useState } from "react";
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const [selectedYear, setSelectedYear] = useState<number>(2024);
+  const [yearList, setYearList] = useState<number[]>([]);
+
+  useEffect(() => {
+    const fetchFolders = async () => {
+      const response = await fetch("/api/folders");
+      const data = await response.json();
+      const years = data.folders
+        .map((folder: string) => parseInt(folder, 10))
+        .filter((year: number) => !isNaN(year))
+        .sort((a: number, b: number) => b - a);
+
+      setYearList(years);
+      setSelectedYear(years[0] || 2024);
+    };
+
+    fetchFolders();
+  }, []);
+
   const yearListProps: YearListProps = {
-    selectedYear: 2021,
-    years: [2021, 2020, 2019, 2018],
+    selectedYear,
+    years: yearList,
+    setSelectedYear,
   };
+
   const textFieldProps: TextFieldProps = {
     value: '',
     onChange: () => {},
   };
 
-
   return (
-    <html lang="en">
+    <html lang="ja">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />

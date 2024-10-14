@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from '@remix-run/react';
+import { Link } from "@remix-run/react";
 
 export interface YearListProps {
 	selectedYear: number;
 	years: number[];
+	setSelectedYear: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const YearList: React.FC<YearListProps> = ({ selectedYear, years }) => {
+const YearList: React.FC<YearListProps> = ({ selectedYear, years, setSelectedYear }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -53,7 +54,10 @@ const YearList: React.FC<YearListProps> = ({ selectedYear, years }) => {
 									className={`block px-4 py-2 w-full text-center text-xl text-text-color bg-bg-color hover:bg-text-color hover:text-bg-color rounded-lg ${
 										year === selectedYear ? "bg-gray-400 text-white" : ""
 									}`}
-									onClick={() => setIsOpen(false)}
+									onClick={() => {
+										setIsOpen(false);
+										setSelectedYear(year);
+									}}
 								>
 									{year}
 								</Link>

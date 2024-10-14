@@ -76,7 +76,7 @@ export default function Month() {
 			<div className='mt-4 grid grid-cols-3 gap-4'>
 				{loadedImages.map((image, i) => (
 					<div key={i} className='p-2'>
-						<Link to={`/${year}/${month}/${loadedFiles[i]}`}>
+						<a href={`/${year}/${month}/${loadedFiles[i]}`} target="_blank" rel="noreferrer">
 							{image ? (
 								<img src={`data:image/jpeg;base64,${image}`} alt={loadedFiles[i]} className='w-full h-auto' />
 							) : (
@@ -85,7 +85,7 @@ export default function Month() {
 									{loadedFiles[i]}
 								</div>
 							)}
-						</Link>
+						</a>
 					</div>
 				))}
 			</div>

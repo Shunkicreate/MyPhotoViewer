@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Link } from "@remix-run/react";
+import { useEffect, useRef, useState } from "react";
+import YearLink from "./YearLink";
 
 export interface YearListProps {
 	selectedYear: number;
@@ -7,7 +7,7 @@ export interface YearListProps {
 	setSelectedYear: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const YearList: React.FC<YearListProps> = ({ selectedYear, years, setSelectedYear }) => {
+const YearDropdown: React.FC<YearListProps> = ({ selectedYear, years, setSelectedYear }: YearListProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -48,20 +48,15 @@ const YearList: React.FC<YearListProps> = ({ selectedYear, years, setSelectedYea
 				<div className='absolute z-10 mt-2 w-full bg-bg-color rounded-lg shadow-outer-common'>
 					<ul>
 						{years.map((year) => (
-							<li key={year}>
-								<Link
-									to={`/${year}`}
-									className={`block px-4 py-2 w-full text-center text-xl text-text-color bg-bg-color hover:bg-text-color hover:text-bg-color rounded-lg ${
-										year === selectedYear ? "bg-gray-400 text-white" : ""
-									}`}
-									onClick={() => {
-										setIsOpen(false);
-										setSelectedYear(year);
-									}}
-								>
-									{year}
-								</Link>
-							</li>
+							<YearLink
+								key={year}
+								year={String(year)}
+								isSelected={year === selectedYear}
+								onClick={() => {
+									setIsOpen(false);
+									setSelectedYear(year);
+								}}
+							/>
 						))}
 					</ul>
 				</div>
@@ -70,5 +65,5 @@ const YearList: React.FC<YearListProps> = ({ selectedYear, years, setSelectedYea
 	);
 };
 
-export default YearList;
+export default YearDropdown;
 

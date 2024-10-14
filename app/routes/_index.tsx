@@ -4,7 +4,7 @@ import fs from "fs";
 import YearLink from "~/components/YearLink";
 
 export const loader = async () => {
-	const NAS_PATH = "\\\\" + process.env.NAS_PATH || ""
+	const NAS_PATH = process.env.NAS_PATH || ""
 	const folders = fs
 		.readdirSync(NAS_PATH, { withFileTypes: true })
 		.filter((dirent) => dirent.isDirectory())

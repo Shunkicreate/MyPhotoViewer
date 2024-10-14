@@ -22,7 +22,8 @@ const monthNames = [
 
 export const loader = async ({ params }: { params: { year: string } }) => {
 	const { year } = params;
-	const yearPath = path.join("\\\\raspberrypi\\Main\\Photos", year);
+	const NAS_PATH = process.env.NAS_PATH || "";
+	const yearPath = path.join(NAS_PATH, year);
 	const months = fs.readdirSync(yearPath).filter((month) => fs.statSync(path.join(yearPath, month)).isDirectory());
 
 	return json({ year, months }, { headers: { "Cache-Control": "public, max-age=600" } });

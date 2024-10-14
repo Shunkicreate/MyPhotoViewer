@@ -13,7 +13,7 @@ import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 import fs from "fs";
 
-const NAS_PATH = "\\\\" + process.env.NAS_PATH || ""
+const NAS_PATH = process.env.NAS_PATH || ""
 const ABORT_DELAY = 5_000;
 
 export default function handleRequest(

@@ -8,7 +8,8 @@ import { useBatchImageLoader } from "~/hooks/useBatchImageLoader";
 
 export const loader = async ({ params }: { params: { year: string; month: string } }) => {
 	const { year, month } = params;
-	const monthPath = path.join("\\\\raspberrypi\\Main\\Photos", year, month);
+    const NAS_PATH = process.env.NAS_PATH || "";
+	const monthPath = path.join(NAS_PATH, year, month);
 	const files = fs
 		.readdirSync(monthPath)
 		.filter(
@@ -28,12 +29,13 @@ export const action: ActionFunction = async ({ request }) => {
 	const year = formData.get("year") as string;
 	const month = formData.get("month") as string;
 	const files = formData.getAll("file") as string[]; // 複数のファイルを取得
+    const NAS_PATH = process.env.NAS_PATH || "";
 
 	try {
 		const images = await Promise.all(
 			files.map(async (file) => {
 				try {
-					const filePath = path.join("\\\\raspberrypi\\Main\\Photos", year, month, file);
+					const filePath = path.join(NAS_PATH, year, month, file);
 					const fileBuffer = fs.readFileSync(filePath);
 					const resizedImageBuffer = await sharp(fileBuffer).rotate().resize(480).jpeg({ quality: 70 }).toBuffer();
 					return resizedImageBuffer.toString("base64");

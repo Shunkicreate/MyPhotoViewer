@@ -5,7 +5,8 @@ import path from "path";
 // Loader function to fetch image data from NAS
 export const loader = async ({ params }: { params: { year: string; month: string; photoName: string } }) => {
     const { year, month, photoName } = params;
-    const filePath = path.join("\\\\raspberrypi\\Main\\Photos", year, month, photoName);
+    const NAS_PATH = process.env.NAS_PATH || "";
+    const filePath = path.join(NAS_PATH, year, month, photoName);
 
     if (!fs.existsSync(filePath)) {
         throw new Response("File not found", { status: 404 });

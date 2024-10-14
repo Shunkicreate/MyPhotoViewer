@@ -12,9 +12,8 @@ import { RemixServer } from "@remix-run/react";
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 import fs from "fs";
-// import path from "path";
 
-const NAS_PATH = "\\\\raspberrypi\\Main\\Photos";
+const NAS_PATH = "\\\\" + process.env.NAS_PATH || ""
 const ABORT_DELAY = 5_000;
 
 export default function handleRequest(

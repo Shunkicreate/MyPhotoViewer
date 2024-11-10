@@ -9,10 +9,15 @@ import load_nas_path from "~/lib/load_nas_path";
 
 export const loader = async ({ params }: { params: { year: string; month: string } }) => {
 	const { year, month } = params;
+	if (year === "api" && month === "folders") {
+		throw new Response("Not Found", { status: 404 });
+	}
 	const NAS_PATH = load_nas_path();
 	console.log(NAS_PATH);
-	console.log("-------------------------------------------------")
+	console.log("-------------------------------------------------");
 	const monthPath = path.join(NAS_PATH, year, month);
+	console.log(year, month);
+	console.log(monthPath);
 	const files = fs
 		.readdirSync(monthPath)
 		.filter(
@@ -23,7 +28,10 @@ export const loader = async ({ params }: { params: { year: string; month: string
 				file.toLowerCase().endsWith(".gif")
 		);
 	console.log(files);
-	return json({ year, month, files, totalFiles: files.length }, { headers: { "Cache-Control": "public, max-age=600" } });
+	return json(
+		{ year, month, files, totalFiles: files.length },
+		{ headers: { "Cache-Control": "public, max-age=600" } }
+	);
 };
 
 // action関数でエラーハンドリングを強化
@@ -32,7 +40,7 @@ export const action: ActionFunction = async ({ request }) => {
 	const year = formData.get("year") as string;
 	const month = formData.get("month") as string;
 	const files = formData.getAll("file") as string[]; // 複数のファイルを取得
-    const NAS_PATH = load_nas_path();
+	const NAS_PATH = load_nas_path();
 
 	try {
 		const images = await Promise.all(
@@ -81,7 +89,7 @@ export default function Month() {
 			<div className='mt-4 grid grid-cols-3 gap-4'>
 				{loadedImages.map((image, i) => (
 					<div key={i} className='p-2'>
-						<a href={`/${year}/${month}/${loadedFiles[i]}`} target="_blank" rel="noreferrer">
+						<a href={`/${year}/${month}/${loadedFiles[i]}`} target='_blank' rel='noreferrer'>
 							{image ? (
 								<img src={`data:image/jpeg;base64,${image}`} alt={loadedFiles[i]} className='w-full h-auto' />
 							) : (

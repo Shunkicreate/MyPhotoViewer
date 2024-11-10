@@ -28,6 +28,36 @@ export default function handleRequest(
   loadContext: AppLoadContext
 ) {
   const { pathname } = new URL(request.url);
+  // Basic認証を追加
+  const authHeader = request.headers.get("Authorization");
+  const validUsername = process.env.BASIC_AUTH_USERNAME || "yourUsername";
+  const validPassword = process.env.BASIC_AUTH_PASSWORD || "yourPassword";
+  console.log("API request");
+  console.log(authHeader);
+  
+  if (!authHeader || !authHeader.startsWith("Basic ")) {
+    // 認証がない場合は401エラーを返す
+    return new Response("Unauthorized", {
+      status: 401,
+      headers: { "WWW-Authenticate": 'Basic realm="Secure Area"' },
+    });
+  }
+
+  // 認証情報を解析
+  const base64Credentials = authHeader.split(" ")[1];
+  const credentials = Buffer.from(base64Credentials, "base64").toString("utf-8");
+  const [username, password] = credentials.split(":");
+  console.log(username, validUsername, password, validPassword);
+  console.log(username !== validUsername, password !== validPassword);
+  if (username !== validUsername || password !== validPassword) {
+    // 認証失敗時
+    console.log("Unauthorized");
+    return new Response("Unauthorized", {
+      status: 401,
+      headers: { "WWW-Authenticate": 'Basic realm="Secure Area"' },
+    });
+  }
+  console.log("Authorized");
   if (pathname === "/api/folders") {
     // ディレクトリを読み取る
     const folders = fs

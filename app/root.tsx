@@ -1,10 +1,49 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
+import { json, Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "@remix-run/react";
 import "./tailwind.css";
 import Header from "./components/Header";
 import { TextFieldProps } from "./components/TextField";
 import { YearListProps } from "./components/YearList";
 import { useEffect, useState } from "react";
 import useLocalStorage from "./hooks/useLocalStorage ";
+
+const isAuthorized = (request: Request) => {
+	const authHeader = request.headers.get("Authorization");
+	const validUsername = process.env.BASIC_AUTH_USERNAME || "yourUsername";
+	const validPassword = process.env.BASIC_AUTH_PASSWORD || "yourPassword";
+	console.log("API request in root");
+	console.log(authHeader);
+	if (!authHeader || !authHeader.startsWith("Basic ")) {
+		// 認証がない場合は401エラーを返す
+		return false;
+	}
+
+	// 認証情報を解析
+	const base64Credentials = authHeader.split(" ")[1];
+	const credentials = Buffer.from(base64Credentials, "base64").toString("utf-8");
+	const [username, password] = credentials.split(":");
+	console.log(username, validUsername, password, validPassword);
+	console.log(username !== validUsername, password !== validPassword);
+	if (username !== validUsername || password !== validPassword) {
+		// 認証失敗時
+		console.log("Unauthorized");
+		return false;
+	}
+	return true;
+};
+
+export const loader = ({ request }: { request: Request }) => {
+	if (isAuthorized(request)) {
+		return json({ authorized: true });
+	} else {
+		return new Response(JSON.stringify({ authorized: false }), {
+			status: 401,
+			headers: {
+				"Content-Type": "application/json",
+				"WWW-Authenticate": 'Basic realm="Access to the site"',
+			},
+		});
+	}
+};
 
 export function Layout({ children }: { children: React.ReactNode }) {
 	const [selectedYear, setSelectedYear] = useLocalStorage<number>("selectedYear", 2017);
@@ -56,5 +95,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+	const { authorized } = useLoaderData<typeof loader>();
+	if (!authorized) {
+		return <>Authorization Required</>;
+	}
+
 	return <Outlet />;
 }

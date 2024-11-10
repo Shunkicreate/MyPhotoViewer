@@ -14,5 +14,5 @@ services:
     ports:
       - "5173:5173"  # 本番環境では内部通信のみで使用
     volumes:
-      - "${HOST_NAS_PATH}:/nas"
+      - "${HOST_NAS_PATH}:${NAS_PATH}"
     restart: always

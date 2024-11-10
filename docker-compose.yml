@@ -11,7 +11,7 @@ services:
 
   remix_app:
     build:
-      context: .
+      context: ./dockerfile
       dockerfile: Dockerfile
     container_name: remix-app-container
     networks:

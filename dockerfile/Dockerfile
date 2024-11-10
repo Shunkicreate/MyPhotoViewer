@@ -13,8 +13,11 @@ RUN npm install
 # アプリケーションコードをすべてコピー
 COPY . .
 
-# ポートを公開（例：3000ポートを利用）
-EXPOSE 3000
+# 本番用ビルドを実行
+RUN npm run build
+
+# ポートを公開（例：5173ポートを利用）
+EXPOSE 5173
 
 # 開発用のデフォルトコマンド
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start"]

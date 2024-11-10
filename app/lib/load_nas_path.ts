@@ -3,8 +3,6 @@ const load_nas_path: () => string = () => {
     if (process.env.NODE_ENV === "development") {
 		NAS_PATH = `\\\\${NAS_PATH}`;
 	}
-    console.log(NAS_PATH);
-    console.log("-------------------------------------------------")
     return NAS_PATH;
 };
 

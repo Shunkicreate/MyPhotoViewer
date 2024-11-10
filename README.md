@@ -53,5 +53,7 @@ Docker compose down
 `docker-compose down`
 
 ## 本番環境
+compose buildして、upする
+`docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build`
 compose up
 `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d`

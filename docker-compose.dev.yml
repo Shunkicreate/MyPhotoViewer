@@ -3,7 +3,7 @@ version: '3.8'
 services:
   nginx:
     ports:
-      - "8080:80"  # 開発用に別ポートで公開
+      - "80:80"
     volumes:
       - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
 

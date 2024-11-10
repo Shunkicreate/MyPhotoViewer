@@ -8,8 +8,6 @@ services:
       - remix_app
     networks:
       - webnet
-    ports:
-      - "8080:80"
 
   remix_app:
     build:

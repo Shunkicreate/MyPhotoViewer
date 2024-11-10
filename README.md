@@ -57,3 +57,6 @@ compose buildして、upする
 `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build`
 compose up
 `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d`
+
+ログを見る
+`docker logs remix-app-container`

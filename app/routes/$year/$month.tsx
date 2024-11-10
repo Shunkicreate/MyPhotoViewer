@@ -13,11 +13,7 @@ export const loader = async ({ params }: { params: { year: string; month: string
 		throw new Response("Not Found", { status: 404 });
 	}
 	const NAS_PATH = load_nas_path();
-	console.log(NAS_PATH);
-	console.log("-------------------------------------------------");
 	const monthPath = path.join(NAS_PATH, year, month);
-	console.log(year, month);
-	console.log(monthPath);
 	const files = fs
 		.readdirSync(monthPath)
 		.filter(
@@ -27,7 +23,6 @@ export const loader = async ({ params }: { params: { year: string; month: string
 				file.toLowerCase().endsWith(".png") ||
 				file.toLowerCase().endsWith(".gif")
 		);
-	console.log(files);
 	return json(
 		{ year, month, files, totalFiles: files.length },
 		{ headers: { "Cache-Control": "public, max-age=600" } }

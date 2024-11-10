@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  nginx:
+    ports:
+      - "80:80"  # 本番用に80ポートで公開
+    restart: always  # サービスの自動再起動
+    volumes:
+      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
+
+  remix_app:
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "5173:5173"  # 本番環境では内部通信のみで使用
+    restart: always

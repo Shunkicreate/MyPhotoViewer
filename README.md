@@ -38,3 +38,20 @@ Make sure to deploy the output of `npm run build`
 ## Styling
 
 This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever css framework you prefer. See the [Vite docs on css](https://vitejs.dev/guide/features.html#css) for more information.
+
+## 開発環境
+compose buildして、upする
+`docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build`
+
+compose up
+`docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d`
+
+Dockerの状態確認
+`docker ps`
+
+Docker compose down
+`docker-compose down`
+
+## 本番環境
+compose up
+`docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d`

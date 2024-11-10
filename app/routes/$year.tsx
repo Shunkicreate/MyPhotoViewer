@@ -3,6 +3,7 @@ import { json } from "@remix-run/node";
 import fs from "fs";
 import path from "path";
 import MonthLink from "~/components/MonthLink";
+import load_nas_path from "~/lib/load_nas_path";
 
 // 月名の対応表を作成
 const monthNames = [
@@ -22,7 +23,7 @@ const monthNames = [
 
 export const loader = async ({ params }: { params: { year: string } }) => {
 	const { year } = params;
-	const NAS_PATH = process.env.NAS_PATH || "";
+	const NAS_PATH = load_nas_path();
 	const yearPath = path.join(NAS_PATH, year);
 	const months = fs.readdirSync(yearPath).filter((month) => fs.statSync(path.join(yearPath, month)).isDirectory());
 

@@ -5,10 +5,13 @@ import sharp from "sharp";
 import { useLoaderData } from "@remix-run/react";
 import Loading from "~/components/Loading";
 import { useBatchImageLoader } from "~/hooks/useBatchImageLoader";
+import load_nas_path from "~/lib/load_nas_path";
 
 export const loader = async ({ params }: { params: { year: string; month: string } }) => {
 	const { year, month } = params;
-    const NAS_PATH = process.env.NAS_PATH || "";
+	const NAS_PATH = load_nas_path();
+	console.log(NAS_PATH);
+	console.log("-------------------------------------------------")
 	const monthPath = path.join(NAS_PATH, year, month);
 	const files = fs
 		.readdirSync(monthPath)
@@ -29,7 +32,7 @@ export const action: ActionFunction = async ({ request }) => {
 	const year = formData.get("year") as string;
 	const month = formData.get("month") as string;
 	const files = formData.getAll("file") as string[]; // 複数のファイルを取得
-    const NAS_PATH = process.env.NAS_PATH || "";
+    const NAS_PATH = load_nas_path();
 
 	try {
 		const images = await Promise.all(

@@ -1,23 +1,20 @@
-# Use the official Node.js 22 image as the base image
+# Node.jsの公式イメージをベースに使用
 FROM node:22
 
-# Set the working directory inside the container
+# 作業ディレクトリを設定
 WORKDIR /app
 
-# Copy the rest of the application code to the working directory
-COPY . .
+# 依存関係のインストールに必要なファイルを先にコピー
+COPY package*.json ./
 
-# # Copy package.json and package-lock.json to the working directory
-# COPY package*.json ./
-
-# Install dependencies
+# 開発依存関係も含めてインストール
 RUN npm install
 
-# Build the Remix app
-RUN npm run build
+# アプリケーションコードをすべてコピー
+COPY . .
 
-# Expose a port (if your application needs it)
-EXPOSE 5173
+# ポートを公開（例：3000ポートを利用）
+EXPOSE 3000
 
-# Start the application using npx to ensure remix-serve is found
+# 開発用のデフォルトコマンド
 CMD ["npm", "run", "dev"]

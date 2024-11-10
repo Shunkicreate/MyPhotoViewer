@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  nginx:
+    ports:
+      - "8080:80"  # 開発用に別ポートで公開
+    volumes:
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
+
+  remix_app:
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "5173:5173"  # Remixアプリの開発用ポート
+    volumes:
+      - .:/app  # ローカルのコードをコンテナ内にマウント
+      - /app/node_modules  # node_modulesのバインドを防止
+    command: ["npm", "run", "dev"]  # 開発用サーバーの起動コマンド

@@ -12,8 +12,9 @@ import { RemixServer } from "@remix-run/react";
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 import fs from "fs";
+import load_nas_path from "./lib/load_nas_path";
 
-const NAS_PATH = process.env.NAS_PATH || ""
+const NAS_PATH = load_nas_path();
 const ABORT_DELAY = 5_000;
 
 export default function handleRequest(

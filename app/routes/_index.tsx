@@ -2,9 +2,10 @@ import { useLoaderData } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import fs from "fs";
 import YearLink from "~/components/YearLink";
+import load_nas_path from "~/lib/load_nas_path";
 
 export const loader = async () => {
-	const NAS_PATH = process.env.NAS_PATH || ""
+	const NAS_PATH = load_nas_path();
 	const folders = fs
 		.readdirSync(NAS_PATH, { withFileTypes: true })
 		.filter((dirent) => dirent.isDirectory())

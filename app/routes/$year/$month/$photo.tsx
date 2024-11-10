@@ -1,11 +1,12 @@
 import { useLoaderData } from "@remix-run/react";
 import fs from "fs";
 import path from "path";
+import load_nas_path from "~/lib/load_nas_path";
 
 // Loader function to fetch image data from NAS
 export const loader = async ({ params }: { params: { year: string; month: string; photoName: string } }) => {
     const { year, month, photoName } = params;
-    const NAS_PATH = process.env.NAS_PATH || "";
+    const NAS_PATH = load_nas_path();
     const filePath = path.join(NAS_PATH, year, month, photoName);
 
     if (!fs.existsSync(filePath)) {

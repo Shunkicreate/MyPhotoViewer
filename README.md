@@ -60,3 +60,4 @@ compose up
 
 ログを見る
 `docker logs remix-app-container`
+`docker logs nginx-container`

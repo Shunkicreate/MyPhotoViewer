@@ -11,6 +11,8 @@ services:
   remix_app:
     environment:
       - NODE_ENV=production
+      - BASIC_AUTH_USERNAME=${BASIC_AUTH_USERNAME}  # .envファイルのBASIC_AUTH_USERNAMEを使用
+      - BASIC_AUTH_PASSWORD=${BASIC_AUTH_PASSWORD}  # .envファイルのBASIC_AUTH_PASSWORDを使用
     ports:
       - "5173:5173"  # 本番環境では内部通信のみで使用
     volumes:

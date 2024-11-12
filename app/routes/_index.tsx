@@ -22,7 +22,7 @@ export default function Index() {
 		<div className='p-4'>
 			<h1 className='text-3xl'>Years</h1>
 			<div>
-				<ul className='mt-4 grid grid-cols-5 gap-8'>
+				<ul className='mt-4 grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 md:gap-8'>
 					{folders.map((folder) => (
 						<YearLink key={folder} year={folder} isSelected={false} onClick={() => {}} />
 					))}

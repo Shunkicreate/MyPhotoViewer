@@ -33,8 +33,8 @@ export default function Photo() {
     const { imageData, year, month } = useLoaderData<LoaderData>();
 
     return (
-        <div>
-            <img src={`data:image/jpeg;base64,${imageData}`} alt={`${year}-${month}`} />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'hidden', zIndex:50 }} className="bg-bg-color">
+            <img src={`data:image/jpeg;base64,${imageData}`} alt={`${year}-${month}`} style={{ maxHeight: '100%', maxWidth: '100%' }} />
         </div>
     );
 }

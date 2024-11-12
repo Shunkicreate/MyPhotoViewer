@@ -74,16 +74,20 @@ export default function Month() {
 		month,
 		batchSize: 10, // 必要に応じて変更可能
 	});
+	const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	const [monthIndex, displayNumber] = month.split("_");
+	const displayMonth = monthNames[parseInt(monthIndex, 10) - 1];
+	const displayNumberFormatted = parseInt(displayNumber, 10).toString();
 
 	return (
 		<div className='p-4'>
 			{loadedImages.length === 0 && <Loading />}
-			<h1 className='text-3xl'>
-				Photos of {month} {year}
+			<h1 className='text-2xl sm:text-3xl'>
+				{displayMonth} No.{displayNumberFormatted} {year}
 			</h1>
-			<div className='mt-4 grid grid-cols-3 gap-4'>
+			<div className='mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
 				{loadedImages.map((image, i) => (
-					<div key={i} className='p-2'>
+					<div key={i} className=''>
 						<a href={`/${year}/${month}/${loadedFiles[i]}`} target='_blank' rel='noreferrer'>
 							{image ? (
 								<img src={`data:image/jpeg;base64,${image}`} alt={loadedFiles[i]} className='w-full h-auto' />

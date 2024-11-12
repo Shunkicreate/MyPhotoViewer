@@ -20,8 +20,6 @@ const Header: React.FC<HeaderProps> = ({ yearListProps, textFieldProps }) => {
 				<div className='flex flex-row items-center'>
 					<div className='mx-4 sm:mx-8 md:mx-12 my-auto hidden sm:block'>
 						<TextField {...textFieldProps} />
-
-						<TextField {...textFieldProps} />
 					</div>
 					<div className='mx-4 sm:mx-8 md:mx-12 my-auto'>
 						<YearList {...yearListProps} />

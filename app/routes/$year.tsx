@@ -50,8 +50,8 @@ export default function Year() {
 
 	return (
 		<div className='p-4'>
-			<h1 className='text-3xl'>Photos of {year}</h1>
-			<div className='mt-4 mx-96'>
+			<h1 className='text-3xl text-center'>Photos of {year}</h1>
+			<div className='mt-4 mx-auto max-w-4xl'>
 				<ul>
 					{Object.entries(monthFolders).map(([monthName, folderNumbers]) => (
 						<li key={monthName} className='mb-4'>

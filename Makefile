@@ -21,16 +21,16 @@ up-my-photo-viewer:
 up-photo-viewer:
 	docker compose $(PHOTO_VIEWER_COMPOSE_FILES) up -d
 
-# cloud flareの設定を行う
-setup-cloud-flare:
-	@export $(cat .env) && docker run --rm --env-file .env --network=host cloudflare/cloudflared:latest tunnel --no-autoupdate run --token $$CLOUDFLARE_TOKEN
+# # cloud flareの設定を行う
+# setup-cloud-flare:
+# 	@export $(cat .env) && docker run --rm --env-file .env --network=host cloudflare/cloudflared:latest tunnel --no-autoupdate run --token $$CLOUDFLARE_TOKEN
 
-# cloud flareを停止
-down-cloud-flare:
-	docker run cloudflare/cloudflared:latest tunnel stop
+# # cloud flareを停止
+# down-cloud-flare:
+# 	docker run cloudflare/cloudflared:latest tunnel stop
 
 # 全てのコンテナをcompose up
-up-all: up-my-photo-viewer up-photo-viewer setup-cloud-flare
+up-all: up-my-photo-viewer up-photo-viewer
 
 # MyPhotoViewerのコンテナを停止
 down-my-photo-viewer:
@@ -41,4 +41,4 @@ down-photo-viewer:
 	docker compose $(PHOTO_VIEWER_COMPOSE_FILES) down
 
 # 全てのコンテナを停止
-down-all: down-my-photo-viewer down-photo-viewer down-cloud-flare
+down-all: down-my-photo-viewer down-photo-viewer

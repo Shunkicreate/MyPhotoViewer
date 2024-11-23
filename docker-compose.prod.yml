@@ -29,8 +29,7 @@ services:
     command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TOKEN}
     environment:
       - CLOUDFLARE_TOKEN=${CLOUDFLARE_TOKEN}
-    networks:
-      - webnet
+    network_mode: host
     restart: unless-stopped
     depends_on:
-          - nginx
+      - nginx

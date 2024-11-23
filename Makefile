@@ -23,7 +23,7 @@ up-photo-viewer:
 
 # cloud flareの設定を行う
 setup-cloud-flare:
-	@export $(cat .env) && docker run --rm --env-file .env cloudflare/cloudflared:latest tunnel --no-autoupdate run --token $$CLOUDFLARE_TOKEN
+	@export $(cat .env) && docker run --rm --env-file .env --network=host cloudflare/cloudflared:latest tunnel --no-autoupdate run --token $$CLOUDFLARE_TOKEN
 
 # cloud flareを停止
 down-cloud-flare:

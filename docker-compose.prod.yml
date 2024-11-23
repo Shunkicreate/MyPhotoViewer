@@ -7,17 +7,21 @@ services:
     restart: always  # サービスの自動再起動
     volumes:
       - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - remix_app
 
   remix_app:
     environment:
       - NODE_ENV=production
-      - BASIC_AUTH_USERNAME=${BASIC_AUTH_USERNAME}  # .envファイルのBASIC_AUTH_USERNAMEを使用
-      - BASIC_AUTH_PASSWORD=${BASIC_AUTH_PASSWORD}  # .envファイルのBASIC_AUTH_PASSWORDを使用
-    ports:
-      - "5173:5173"  # 本番環境では内部通信のみで使用
+      - BASIC_AUTH_USERNAME=${BASIC_AUTH_USERNAME}
+      - BASIC_AUTH_PASSWORD=${BASIC_AUTH_PASSWORD}
     volumes:
       - "${HOST_NAS_PATH}:${NAS_PATH}"
     restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5173/health"]
+      interval: 30s
+      retries: 3
 
   cloudflare-tunnel:
     image: cloudflare/cloudflared:latest
@@ -26,5 +30,7 @@ services:
     environment:
       - CLOUDFLARE_TOKEN=${CLOUDFLARE_TOKEN}
     networks:
-      - webnet  # cloudflare-tunnelも同じネットワークに追加
+      - webnet
     restart: unless-stopped
+    depends_on:
+          - nginx

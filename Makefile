@@ -21,6 +21,10 @@ up-my-photo-viewer:
 up-photo-viewer:
 	docker compose $(PHOTO_VIEWER_COMPOSE_FILES) up -d
 
+# cloud flareの設定を行う
+setup-cloud-flare:
+	@export $(cat .env | xargs) && docker run cloudflare/cloudflared:latest tunnel --no-autoupdate run --token $$CLOUDFLARE_TOKEN
+
 # 全てのコンテナをcompose up
 up-all: up-my-photo-viewer up-photo-viewer
 

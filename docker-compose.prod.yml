@@ -21,7 +21,10 @@ services:
 
   cloudflare-tunnel:
     image: cloudflare/cloudflared:latest
+    container_name: cloudflare-tunnel
     command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TOKEN}
     environment:
       - CLOUDFLARE_TOKEN=${CLOUDFLARE_TOKEN}
+    networks:
+      - webnet  # cloudflare-tunnelも同じネットワークに追加
     restart: unless-stopped

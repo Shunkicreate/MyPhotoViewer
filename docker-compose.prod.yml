@@ -18,3 +18,10 @@ services:
     volumes:
       - "${HOST_NAS_PATH}:${NAS_PATH}"
     restart: always
+
+  cloudflare-tunnel:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TOKEN}
+    environment:
+      - CLOUDFLARE_TOKEN=${CLOUDFLARE_TOKEN}
+    restart: unless-stopped

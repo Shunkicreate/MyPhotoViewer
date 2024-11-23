@@ -26,7 +26,7 @@ setup-cloud-flare:
 	@export $(cat .env | xargs) && docker run cloudflare/cloudflared:latest tunnel --no-autoupdate run --token $$CLOUDFLARE_TOKEN
 
 # 全てのコンテナをcompose up
-up-all: up-my-photo-viewer up-photo-viewer
+up-all: up-my-photo-viewer up-photo-viewer setup-cloud-flare
 
 # MyPhotoViewerのコンテナを停止
 down-my-photo-viewer:
